@@ -96,6 +96,7 @@ function Experience() {
     return () => clearTimeout(t);
   }, []);
 
+  const [burst, setBurst] = useState(0);
   const toggleSound = () => {
     const n = !sound;
     setSoundState(n);
@@ -107,7 +108,8 @@ function Experience() {
     sfx.match();
     setTimeout(() => { setLit(true); }, reduce ? 100 : 1400);
     setTimeout(() => sfx.bell(), reduce ? 200 : 2000);
-    setTimeout(() => setStage("ritual"), reduce ? 1200 : 5200);
+    setTimeout(() => sfx.sparkle(), reduce ? 300 : 2400);
+    setTimeout(() => { setStage("ritual"); [0,1,2,3,4].forEach((k) => setTimeout(() => sfx.deal(), 800 + k * 120)); }, reduce ? 1200 : 5200);
   };
 
   const choose = (id: CardId) => {
@@ -119,7 +121,8 @@ function Experience() {
     setSelected(id);
     setTimeout(() => setStage("reveal"), 900);
     setTimeout(() => { sfx.shimmer(); setFlipped(true); }, 1900);
-    setTimeout(() => sfx.reveal(), 2900);
+    setTimeout(() => { sfx.reveal(); sfx.burst(); setBurst((b) => b + 1); }, 2900);
+    setTimeout(() => sfx.burst(), 3500);
   };
 
   const another = () => {
@@ -173,7 +176,7 @@ function Experience() {
 
         {stage === "ritual" && (
           <motion.section key="ritual" className="relative flex min-h-[100svh] flex-col items-center px-6 pb-40 pt-24 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1, ease: EASE }}>
-            <motion.p className="label-tracked text-gold" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>Chapter II · The ritual</motion.p>
+            <motion.p className="label-tracked text-gold" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>The ritual</motion.p>
             <motion.h2 className="mt-5 font-display text-5xl font-medium leading-[0.95] sm:text-7xl" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 1.2, ease: EASE }}>
               A little light.<br /><span className="italic text-foil">A little destiny.</span>
             </motion.h2>
@@ -200,10 +203,10 @@ function Experience() {
                     transition={selected ? { duration: 0.9, ease: EASE } : { delay: 0.8 + i * 0.12, duration: 1, ease: EASE, y: { repeat: Infinity, duration: 3 + i * 0.4, ease: "easeInOut", delay: 2 + i * 0.2 } }}
                     whileHover={selected ? {} : { y: Math.abs(off) * 14 - 22, scale: 1.05, zIndex: 10 }}
                     whileTap={{ scale: 0.95 }}
+                    onHoverStart={() => !selected && sfx.hover(i)}
                     style={{ transformOrigin: "50% 120%" }}
                   >
                     <CardBack />
-                    <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap label-tracked text-[0.55rem] text-gold/70">{c.numeral}</span>
                   </motion.button>
                 );
               })}
@@ -222,7 +225,8 @@ function Experience() {
           <motion.section key="reveal" className="relative flex min-h-[100svh] flex-col items-center px-6 pb-20 pt-24 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, filter: "blur(10px)" }} transition={{ duration: 0.8 }}>
             <Particles count={10} />
             <motion.div className="halo pointer-events-none absolute left-1/2 top-[40%] h-[120vw] max-h-[900px] w-[120vw] max-w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-flame-glow" initial={{ opacity: 0, scale: 0.3 }} animate={{ opacity: flipped ? 0.8 : 0.3, scale: 1 }} transition={{ duration: 2 }} />
-            <p className="label-tracked relative text-gold">Chapter III · Your fortune</p>
+            <Burst k={burst} />
+            <p className="label-tracked relative text-gold">Your fortune</p>
 
             <div className="relative mt-8 aspect-[4/5] w-full max-w-[380px]" style={{ perspective: 1400 }}>
               <motion.div className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }} initial={{ rotateY: 0, scale: 0.85 }} animate={{ rotateY: flipped ? 180 : 0, scale: 1 }} transition={{ duration: 1.4, ease: [0.65, 0, 0.35, 1] }}>
@@ -230,7 +234,7 @@ function Experience() {
                 <div className="absolute inset-0" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
                   <CardFrame accent={card.accent}>
                     <div className="flex h-full flex-col items-center px-7 py-8">
-                      <p className="label-tracked text-[0.6rem] text-gold">{card.numeral} · {card.name}</p>
+                      <p className="label-tracked text-[0.6rem] text-gold">{card.name}</p>
                       <motion.div className="mt-2 h-[34%] w-[56%]" initial={{ scale: 0.6, opacity: 0 }} animate={flipped ? { scale: 1, opacity: 1 } : {}} transition={{ delay: 1.1, duration: 1.2, ease: EASE }} style={{ filter: "drop-shadow(0 0 18px color-mix(in oklab, var(--saffron) 60%, transparent))" }}>
                         <CardArt id={card.id} accent={card.accent} />
                       </motion.div>
@@ -285,7 +289,7 @@ function KeepFortune({ show, card, fortune, onAnother, onNext }: { show: boolean
 
   return (
     <motion.div className="relative mt-16 w-full max-w-md" initial={{ opacity: 0, y: 30 }} animate={show ? { opacity: 1, y: 0 } : {}} transition={{ delay: 3.6, duration: 1.2, ease: EASE }}>
-      <p className="label-tracked text-gold">Chapter IV · Keep it close</p>
+      <p className="label-tracked text-gold">Keep it close</p>
       <h2 className="mt-4 font-display text-4xl font-medium leading-[0.95] sm:text-5xl">A little something<br /><span className="italic text-foil">to take with you.</span></h2>
       <p className="mx-auto mt-4 max-w-xs text-sm text-muted-foreground">May this little thought stay with you through the year ahead.</p>
       <div className="mt-8 flex flex-col gap-3">
@@ -299,7 +303,7 @@ function KeepFortune({ show, card, fortune, onAnother, onNext }: { show: boolean
         <p className="h-5 text-xs text-saffron" aria-live="polite">{msg}</p>
       </div>
       <button onClick={onNext} className="mt-10 flex w-full flex-col items-center gap-3 text-champagne">
-        <span className="label-tracked text-[0.6rem]">The final chapter</span>
+        <span className="label-tracked text-[0.6rem]">One more thing</span>
         <motion.span className="h-12 w-px bg-foil" animate={{ scaleY: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 2.4 }} />
         <span className="font-display text-xl italic">Who lit this light?</span>
       </button>
@@ -316,7 +320,7 @@ function Synergos({ onRestart }: { onRestart: () => void }) {
         <motion.span key={c} className={`absolute ${c} bg-foil`} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 2, delay: 0.2 + i * 0.3, ease: EASE }} />
       ))}
       <div className="relative mx-auto w-full max-w-4xl">
-        <motion.p className="label-tracked text-gold" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>Chapter V · The creator behind the light</motion.p>
+        <motion.p className="label-tracked text-gold" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>The creator behind the light</motion.p>
         <h2 className="mt-6 font-display text-[3.2rem] font-medium leading-[0.9] tracking-tight sm:text-8xl">
           {["Every", "possibility", "begins with", "an idea."].map((w, i) => (
             <motion.span key={w} className={`block ${i === 3 ? "italic text-foil" : ""}`} initial={{ clipPath: "inset(0 0 100% 0)", y: 30 }} animate={{ clipPath: "inset(0 0 0% 0)", y: 0 }} transition={{ delay: 0.9 + i * 0.25, duration: 1.1, ease: EASE }}>{w}</motion.span>
@@ -341,5 +345,26 @@ function Synergos({ onRestart }: { onRestart: () => void }) {
         </motion.div>
       </div>
     </motion.section>
+  );
+}
+
+function Burst({ k }: { k: number }) {
+  if (!k) return null;
+  return (
+    <div key={k} className="pointer-events-none absolute inset-0 z-30 overflow-hidden" aria-hidden>
+      {Array.from({ length: 36 }).map((_, i) => {
+        const a = (i / 36) * Math.PI * 2;
+        const d = 140 + (i % 5) * 45;
+        return (
+          <motion.span
+            key={i}
+            className="absolute left-1/2 top-[45%] h-1.5 w-1.5 rounded-full bg-foil"
+            initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+            animate={{ x: Math.cos(a) * d, y: Math.sin(a) * d + 60, opacity: 0, scale: 0.2 }}
+            transition={{ duration: 1.6 + (i % 3) * 0.3, ease: [0.16, 1, 0.3, 1] }}
+          />
+        );
+      })}
+    </div>
   );
 }

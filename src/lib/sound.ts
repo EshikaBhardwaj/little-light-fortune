@@ -30,7 +30,7 @@ function startAmbient() {
   const c = ac();
   const g = c.createGain();
   g.gain.setValueAtTime(0, c.currentTime);
-  g.gain.linearRampToValueAtTime(0.06, c.currentTime + 4);
+  g.gain.linearRampToValueAtTime(0.09, c.currentTime + 4);
   const filt = c.createBiquadFilter();
   filt.type = "lowpass";
   filt.frequency.value = 900;
@@ -52,8 +52,14 @@ function startAmbient() {
     lfo.start();
     return [o, lfo];
   });
+  // soft bell twinkles every few seconds
+  const tw = setInterval(() => {
+    const notes = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
+    tone(notes[Math.floor(Math.random() * notes.length)]!, 2.5, 0.025, "sine");
+  }, 3800);
   ambient = {
     stop: () => {
+      clearInterval(tw);
       g.gain.linearRampToValueAtTime(0, c.currentTime + 1);
       setTimeout(() => oscs.flat().forEach((o) => o.stop()), 1100);
     },
@@ -108,5 +114,12 @@ export const sfx = {
   },
   shimmer: () => [1046, 1318, 1568, 2093, 2637].forEach((f, i) => tone(f, 1.4, 0.04, "sine", i * 0.08)),
   reveal: () => [261.6, 329.6, 392, 523.3].forEach((f, i) => tone(f, 2.5, 0.07, "triangle", i * 0.15)),
+  hover: (i: number) => tone([659.25, 783.99, 880, 987.77, 1174.66][i % 5]!, 0.6, 0.04, "sine"),
+  deal: () => noise(0.12, 0.18, 2200, 1.5),
+  sparkle: () => Array.from({ length: 10 }).forEach((_, i) => tone(1500 + Math.random() * 2000, 0.5, 0.025, "sine", i * 0.06)),
+  burst: () => {
+    noise(0.5, 0.35, 180, 0.7);
+    Array.from({ length: 14 }).forEach((_, i) => noise(0.06, 0.12, 3000 + Math.random() * 3000, 2, 0.15 + Math.random() * 0.8));
+  },
   transition: () => [196, 293.7, 392].forEach((f, i) => tone(f, 3, 0.05, "sine", i * 0.3)),
 };
