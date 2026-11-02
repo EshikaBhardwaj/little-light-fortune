@@ -188,7 +188,7 @@ function Experience() {
                     key={c.id}
                     aria-label={`Pick ${c.name}`}
                     onClick={() => choose(c.id)}
-                    className="absolute h-[190px] w-[118px] sm:h-[280px] sm:w-[175px]"
+                    className="absolute left-1/2 top-1/2 -ml-[59px] -mt-[95px] h-[190px] w-[118px] sm:-ml-[87px] sm:-mt-[140px] sm:h-[280px] sm:w-[175px]"
                     initial={{ opacity: 0, y: 120, scale: 0.4, rotate: 0 }}
                     animate={
                       selected
