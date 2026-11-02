@@ -43,7 +43,7 @@ export async function renderFortunePng(card: FortuneCard, fortune: Fortune): Pro
   x.lineWidth = 1;
   x.strokeRect(72, 72, W - 144, H - 144);
   // corner diamonds
-  for (const [cx, cy] of [[72, 72], [W - 72, 72], [72, H - 72], [W - 72, H - 72]]) {
+  for (const [cx, cy] of [[72, 72], [W - 72, 72], [72, H - 72], [W - 72, H - 72]] as [number, number][]) {
     x.save();
     x.translate(cx, cy);
     x.rotate(Math.PI / 4);

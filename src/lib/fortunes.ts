@@ -167,7 +167,7 @@ export function pickFortune(cardId: CardId, seen: Set<string>, rand: () => numbe
   let pool = FORTUNES.filter((f) => card.categories.includes(f.category) && !seen.has(f.id));
   if (pool.length === 0) pool = FORTUNES.filter((f) => !seen.has(f.id));
   if (pool.length === 0) pool = FORTUNES;
-  return pool[Math.floor(rand() * pool.length)];
+  return pool[Math.floor(rand() * pool.length)]!;
 }
 
 export const LINKS = {

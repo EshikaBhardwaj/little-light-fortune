@@ -63,7 +63,7 @@ function SoundToggle({ on, toggle }: { on: boolean; toggle: () => void }) {
     <button onClick={toggle} aria-label={on ? "Mute sound" : "Enable sound"} className="fixed right-4 top-4 z-50 flex items-center gap-2 rounded-full border border-gold/50 bg-midnight/60 px-4 py-2 text-champagne backdrop-blur transition hover:border-gold">
       <span className="flex h-3 items-end gap-[2px]">
         {[0, 1, 2].map((i) => (
-          <motion.span key={i} className="w-[2px] bg-gold" animate={{ height: on ? [4, 12, 6, 10][i] : 3 }} transition={{ repeat: on ? Infinity : 0, repeatType: "mirror", duration: 0.5 + i * 0.15 }} />
+          <motion.span key={i} className="w-[2px] bg-gold" animate={{ height: on ? [4, 12, 6][i]! : 3 }} transition={{ repeat: on ? Infinity : 0, repeatType: "mirror", duration: 0.5 + i * 0.15 }} />
         ))}
       </span>
       <span className="label-tracked">{on ? "Sound on" : "Sound off"}</span>
@@ -198,7 +198,7 @@ function Experience() {
                         : { opacity: 1, x: `${off * 44}%`, y: [Math.abs(off) * 14, Math.abs(off) * 14 - 6, Math.abs(off) * 14], rotate: off * 9, scale: 1 }
                     }
                     transition={selected ? { duration: 0.9, ease: EASE } : { delay: 0.8 + i * 0.12, duration: 1, ease: EASE, y: { repeat: Infinity, duration: 3 + i * 0.4, ease: "easeInOut", delay: 2 + i * 0.2 } }}
-                    whileHover={selected ? undefined : { y: Math.abs(off) * 14 - 22, scale: 1.05, zIndex: 10 }}
+                    whileHover={selected ? {} : { y: Math.abs(off) * 14 - 22, scale: 1.05, zIndex: 10 }}
                     whileTap={{ scale: 0.95 }}
                     style={{ transformOrigin: "50% 120%" }}
                   >
