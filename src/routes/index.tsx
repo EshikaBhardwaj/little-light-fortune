@@ -195,7 +195,7 @@ function Experience() {
                         ? isSel
                           ? { opacity: 1, x: 0, y: -10, scale: 1.25, rotate: 0, zIndex: 20 }
                           : { opacity: 0, y: 80, scale: 0.7, filter: "blur(6px)" }
-                        : { opacity: 1, x: `${off * 52}%`, y: [Math.abs(off) * 14, Math.abs(off) * 14 - 6, Math.abs(off) * 14], rotate: off * 9, scale: 1 }
+                        : { opacity: 1, x: `${off * 44}%`, y: [Math.abs(off) * 14, Math.abs(off) * 14 - 6, Math.abs(off) * 14], rotate: off * 9, scale: 1 }
                     }
                     transition={selected ? { duration: 0.9, ease: EASE } : { delay: 0.8 + i * 0.12, duration: 1, ease: EASE, y: { repeat: Infinity, duration: 3 + i * 0.4, ease: "easeInOut", delay: 2 + i * 0.2 } }}
                     whileHover={selected ? undefined : { y: Math.abs(off) * 14 - 22, scale: 1.05, zIndex: 10 }}
