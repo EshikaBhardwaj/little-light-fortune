@@ -173,7 +173,7 @@ function Experience() {
 
         {stage === "ritual" && (
           <motion.section key="ritual" className="relative flex min-h-[100svh] flex-col items-center px-6 pb-40 pt-24 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1, ease: EASE }}>
-            <motion.p className="label-tracked text-gold" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>Chapter II · The ritual</motion.p>
+            <motion.p className="label-tracked text-gold" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>The ritual</motion.p>
             <motion.h2 className="mt-5 font-display text-5xl font-medium leading-[0.95] sm:text-7xl" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 1.2, ease: EASE }}>
               A little light.<br /><span className="italic text-foil">A little destiny.</span>
             </motion.h2>
@@ -222,7 +222,7 @@ function Experience() {
           <motion.section key="reveal" className="relative flex min-h-[100svh] flex-col items-center px-6 pb-20 pt-24 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, filter: "blur(10px)" }} transition={{ duration: 0.8 }}>
             <Particles count={10} />
             <motion.div className="halo pointer-events-none absolute left-1/2 top-[40%] h-[120vw] max-h-[900px] w-[120vw] max-w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-flame-glow" initial={{ opacity: 0, scale: 0.3 }} animate={{ opacity: flipped ? 0.8 : 0.3, scale: 1 }} transition={{ duration: 2 }} />
-            <p className="label-tracked relative text-gold">Chapter III · Your fortune</p>
+            <p className="label-tracked relative text-gold">Your fortune</p>
 
             <div className="relative mt-8 aspect-[4/5] w-full max-w-[380px]" style={{ perspective: 1400 }}>
               <motion.div className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }} initial={{ rotateY: 0, scale: 0.85 }} animate={{ rotateY: flipped ? 180 : 0, scale: 1 }} transition={{ duration: 1.4, ease: [0.65, 0, 0.35, 1] }}>
@@ -285,7 +285,7 @@ function KeepFortune({ show, card, fortune, onAnother, onNext }: { show: boolean
 
   return (
     <motion.div className="relative mt-16 w-full max-w-md" initial={{ opacity: 0, y: 30 }} animate={show ? { opacity: 1, y: 0 } : {}} transition={{ delay: 3.6, duration: 1.2, ease: EASE }}>
-      <p className="label-tracked text-gold">Chapter IV · Keep it close</p>
+      <p className="label-tracked text-gold">Keep it close</p>
       <h2 className="mt-4 font-display text-4xl font-medium leading-[0.95] sm:text-5xl">A little something<br /><span className="italic text-foil">to take with you.</span></h2>
       <p className="mx-auto mt-4 max-w-xs text-sm text-muted-foreground">May this little thought stay with you through the year ahead.</p>
       <div className="mt-8 flex flex-col gap-3">
@@ -299,7 +299,7 @@ function KeepFortune({ show, card, fortune, onAnother, onNext }: { show: boolean
         <p className="h-5 text-xs text-saffron" aria-live="polite">{msg}</p>
       </div>
       <button onClick={onNext} className="mt-10 flex w-full flex-col items-center gap-3 text-champagne">
-        <span className="label-tracked text-[0.6rem]">The final chapter</span>
+        <span className="label-tracked text-[0.6rem]">One more thing</span>
         <motion.span className="h-12 w-px bg-foil" animate={{ scaleY: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 2.4 }} />
         <span className="font-display text-xl italic">Who lit this light?</span>
       </button>
@@ -316,7 +316,7 @@ function Synergos({ onRestart }: { onRestart: () => void }) {
         <motion.span key={c} className={`absolute ${c} bg-foil`} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 2, delay: 0.2 + i * 0.3, ease: EASE }} />
       ))}
       <div className="relative mx-auto w-full max-w-4xl">
-        <motion.p className="label-tracked text-gold" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>Chapter V · The creator behind the light</motion.p>
+        <motion.p className="label-tracked text-gold" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>The creator behind the light</motion.p>
         <h2 className="mt-6 font-display text-[3.2rem] font-medium leading-[0.9] tracking-tight sm:text-8xl">
           {["Every", "possibility", "begins with", "an idea."].map((w, i) => (
             <motion.span key={w} className={`block ${i === 3 ? "italic text-foil" : ""}`} initial={{ clipPath: "inset(0 0 100% 0)", y: 30 }} animate={{ clipPath: "inset(0 0 0% 0)", y: 0 }} transition={{ delay: 0.9 + i * 0.25, duration: 1.1, ease: EASE }}>{w}</motion.span>
