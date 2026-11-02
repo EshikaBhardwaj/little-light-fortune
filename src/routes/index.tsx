@@ -96,6 +96,7 @@ function Experience() {
     return () => clearTimeout(t);
   }, []);
 
+  const [burst, setBurst] = useState(0);
   const toggleSound = () => {
     const n = !sound;
     setSoundState(n);
@@ -107,7 +108,8 @@ function Experience() {
     sfx.match();
     setTimeout(() => { setLit(true); }, reduce ? 100 : 1400);
     setTimeout(() => sfx.bell(), reduce ? 200 : 2000);
-    setTimeout(() => setStage("ritual"), reduce ? 1200 : 5200);
+    setTimeout(() => sfx.sparkle(), reduce ? 300 : 2400);
+    setTimeout(() => { setStage("ritual"); [0,1,2,3,4].forEach((k) => setTimeout(() => sfx.deal(), 800 + k * 120)); }, reduce ? 1200 : 5200);
   };
 
   const choose = (id: CardId) => {
@@ -119,7 +121,8 @@ function Experience() {
     setSelected(id);
     setTimeout(() => setStage("reveal"), 900);
     setTimeout(() => { sfx.shimmer(); setFlipped(true); }, 1900);
-    setTimeout(() => sfx.reveal(), 2900);
+    setTimeout(() => { sfx.reveal(); sfx.burst(); setBurst((b) => b + 1); }, 2900);
+    setTimeout(() => sfx.burst(), 3500);
   };
 
   const another = () => {
@@ -200,10 +203,10 @@ function Experience() {
                     transition={selected ? { duration: 0.9, ease: EASE } : { delay: 0.8 + i * 0.12, duration: 1, ease: EASE, y: { repeat: Infinity, duration: 3 + i * 0.4, ease: "easeInOut", delay: 2 + i * 0.2 } }}
                     whileHover={selected ? {} : { y: Math.abs(off) * 14 - 22, scale: 1.05, zIndex: 10 }}
                     whileTap={{ scale: 0.95 }}
+                    onHoverStart={() => !selected && sfx.hover(i)}
                     style={{ transformOrigin: "50% 120%" }}
                   >
                     <CardBack />
-                    <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap label-tracked text-[0.55rem] text-gold/70">{c.numeral}</span>
                   </motion.button>
                 );
               })}
@@ -222,6 +225,7 @@ function Experience() {
           <motion.section key="reveal" className="relative flex min-h-[100svh] flex-col items-center px-6 pb-20 pt-24 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, filter: "blur(10px)" }} transition={{ duration: 0.8 }}>
             <Particles count={10} />
             <motion.div className="halo pointer-events-none absolute left-1/2 top-[40%] h-[120vw] max-h-[900px] w-[120vw] max-w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-flame-glow" initial={{ opacity: 0, scale: 0.3 }} animate={{ opacity: flipped ? 0.8 : 0.3, scale: 1 }} transition={{ duration: 2 }} />
+            <Burst k={burst} />
             <p className="label-tracked relative text-gold">Your fortune</p>
 
             <div className="relative mt-8 aspect-[4/5] w-full max-w-[380px]" style={{ perspective: 1400 }}>
@@ -230,7 +234,7 @@ function Experience() {
                 <div className="absolute inset-0" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
                   <CardFrame accent={card.accent}>
                     <div className="flex h-full flex-col items-center px-7 py-8">
-                      <p className="label-tracked text-[0.6rem] text-gold">{card.numeral} · {card.name}</p>
+                      <p className="label-tracked text-[0.6rem] text-gold">{card.name}</p>
                       <motion.div className="mt-2 h-[34%] w-[56%]" initial={{ scale: 0.6, opacity: 0 }} animate={flipped ? { scale: 1, opacity: 1 } : {}} transition={{ delay: 1.1, duration: 1.2, ease: EASE }} style={{ filter: "drop-shadow(0 0 18px color-mix(in oklab, var(--saffron) 60%, transparent))" }}>
                         <CardArt id={card.id} accent={card.accent} />
                       </motion.div>
@@ -341,5 +345,26 @@ function Synergos({ onRestart }: { onRestart: () => void }) {
         </motion.div>
       </div>
     </motion.section>
+  );
+}
+
+function Burst({ k }: { k: number }) {
+  if (!k) return null;
+  return (
+    <div key={k} className="pointer-events-none absolute inset-0 z-30 overflow-hidden" aria-hidden>
+      {Array.from({ length: 36 }).map((_, i) => {
+        const a = (i / 36) * Math.PI * 2;
+        const d = 140 + (i % 5) * 45;
+        return (
+          <motion.span
+            key={i}
+            className="absolute left-1/2 top-[45%] h-1.5 w-1.5 rounded-full bg-foil"
+            initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+            animate={{ x: Math.cos(a) * d, y: Math.sin(a) * d + 60, opacity: 0, scale: 0.2 }}
+            transition={{ duration: 1.6 + (i % 3) * 0.3, ease: [0.16, 1, 0.3, 1] }}
+          />
+        );
+      })}
+    </div>
   );
 }
