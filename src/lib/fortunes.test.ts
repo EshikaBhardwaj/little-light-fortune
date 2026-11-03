@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { FORTUNES, pickFortune } from "./fortunes";
+import { FORTUNES, LINKS, pickFortune } from "./fortunes";
+
+describe("agency destinations", () => {
+  it("uses the supplied website", () => expect(LINKS.main).toBe("https://www.synergostech.com/"));
+  it("uses the supplied portfolio", () => expect(LINKS.work).toBe("https://synergostech.com/portfolio/"));
+  it("uses the supplied about page", () => expect(LINKS.about).toBe("https://www.synergostech.com/about-us/"));
+});
 
 describe("fortunes", () => {
   it("has at least 100 unique fortunes", () => {

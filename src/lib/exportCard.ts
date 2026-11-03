@@ -1,4 +1,5 @@
 import type { Fortune, FortuneCard } from "./fortunes";
+import synergosLogo from "@/assets/synergos-official.svg.asset.json";
 
 function wrap(ctx: CanvasRenderingContext2D, text: string, max: number) {
   const words = text.split(" ");
@@ -21,7 +22,12 @@ export async function renderFortunePng(card: FortuneCard, fortune: Fortune): Pro
   const c = document.createElement("canvas");
   c.width = W;
   c.height = H;
-  const x = c.getContext("2d")!;
+  const x = c.getContext("2d");
+  if (!x) throw new Error("Unable to create your fortune image");
+  const logo = new Image();
+  logo.crossOrigin = "anonymous";
+  logo.src = synergosLogo.url;
+  await logo.decode();
 
   const bg = x.createRadialGradient(W / 2, H * 0.42, 50, W / 2, H / 2, H * 0.8);
   bg.addColorStop(0, "#701F2D");
@@ -111,7 +117,10 @@ export async function renderFortunePng(card: FortuneCard, fortune: Fortune): Pro
   x.fillText("A LITTLE LIGHT. A WORLD OF POSSIBILITIES.", W / 2, H - 150);
   x.fillStyle = "#E8D5A5";
   x.font = "500 18px Manrope, sans-serif";
-  x.fillText("HAPPY DIWALI · SYNERGOS", W / 2, H - 112);
+  x.fillText("HAPPY DIWALI", W / 2 - 135, H - 112);
+  const logoWidth = 205;
+  const logoHeight = logoWidth * logo.naturalHeight / logo.naturalWidth;
+  x.drawImage(logo, W / 2 + 40, H - 127, logoWidth, logoHeight);
 
-  return new Promise((res) => c.toBlob((b) => res(b!), "image/png"));
+  return new Promise((res, reject) => c.toBlob((b) => b ? res(b) : reject(new Error("Unable to save your fortune")), "image/png"));
 }

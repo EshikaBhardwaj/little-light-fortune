@@ -6,7 +6,7 @@ import { CardArt, CardBack, CardFrame } from "@/components/diwali/CardArt";
 import { CARDS, LINKS, pickFortune, type CardId, type Fortune } from "@/lib/fortunes";
 import { setSound, sfx } from "@/lib/sound";
 import { renderFortunePng } from "@/lib/exportCard";
-import synergosLogo from "@/assets/synergos-logo.svg.asset.json";
+import synergosLogo from "@/assets/synergos-official.svg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,7 +64,7 @@ function SoundToggle({ on, toggle }: { on: boolean; toggle: () => void }) {
     <button onClick={toggle} aria-label={on ? "Mute sound" : "Enable sound"} className="fixed right-4 top-4 z-50 flex items-center gap-2 rounded-full border border-gold/50 bg-midnight/60 px-4 py-2 text-champagne backdrop-blur transition hover:border-gold">
       <span className="flex h-3 items-end gap-[2px]">
         {[0, 1, 2].map((i) => (
-          <motion.span key={i} className="w-[2px] bg-gold" animate={{ height: on ? [4, 12, 6][i]! : 3 }} transition={{ repeat: on ? Infinity : 0, repeatType: "mirror", duration: 0.5 + i * 0.15 }} />
+          <motion.span key={i} className="w-[2px] bg-gold" animate={{ height: on ? ([4, 12, 6][i] ?? 6) : 3 }} transition={{ repeat: on ? Infinity : 0, repeatType: "mirror", duration: 0.5 + i * 0.15 }} />
         ))}
       </span>
       <span className="label-tracked">{on ? "Sound on" : "Sound off"}</span>
@@ -94,7 +94,7 @@ function Experience() {
 
   useEffect(() => {
     const t = setTimeout(() => setDrawn(true), 300);
-    return () => clearTimeout(t);
+    return () => { clearTimeout(t); setSound(false); };
   }, []);
 
   const [burst, setBurst] = useState(0);
@@ -176,13 +176,15 @@ function Experience() {
               </AnimatePresence>
             </motion.div>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 5.2, duration: 1.4 }} className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-2 px-6">
-              <p className="label-tracked text-[0.55rem] text-gold/60">Imagined and created by</p>
+              <GoldButton variant="ghost" onClick={() => { sfx.transition(); document.getElementById("homepage-creators")?.scrollIntoView({ behavior: reduce ? "instant" : "smooth" }); }}>Who lit this light? →</GoldButton>
               <a href={LINKS.main} target="_blank" rel="noopener noreferrer" aria-label="Visit Synergos">
                 <img src={synergosLogo.url} alt="Synergos" className="h-5 w-auto transition hover:opacity-80 sm:h-6" />
               </a>
             </motion.div>
           </motion.section>
         )}
+
+        {stage === "intro" && <div id="homepage-creators"><Synergos onRestart={lightDiya} homepage /></div>}
 
         {stage === "ritual" && (
           <motion.section key="ritual" className="relative flex min-h-[100svh] flex-col items-center px-6 pb-40 pt-24 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1, ease: EASE }}>
@@ -254,7 +256,7 @@ function Experience() {
                       <motion.p className="mt-4 font-display text-[1.12rem] italic leading-snug text-ivory sm:text-xl" initial={{ opacity: 0, y: 12, filter: "blur(6px)" }} animate={flipped ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}} transition={{ delay: 2.2, duration: 1.4, ease: EASE }}>
                         “{fortune.text}”
                       </motion.p>
-                      <p className="mt-auto label-tracked text-[0.5rem] text-gold/70">Happy Diwali · Synergos</p>
+                      <div className="mt-auto flex items-center justify-center gap-2"><span className="label-tracked text-[0.5rem] text-gold/70">Happy Diwali</span><img src={synergosLogo.url} alt="Synergos" className="h-3 w-auto" /></div>
                     </div>
                   </CardFrame>
                 </div>
@@ -327,7 +329,7 @@ function KeepFortune({ show, card, fortune, onAnother, onNext }: { show: boolean
   );
 }
 
-function Synergos({ onRestart }: { onRestart: () => void }) {
+function Synergos({ onRestart, homepage = false }: { onRestart: () => void; homepage?: boolean }) {
   return (
     <motion.section className="relative flex min-h-[100svh] flex-col justify-center px-7 py-28 sm:px-16" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.4 }}>
       {/* light travelling to edges */}
@@ -352,14 +354,14 @@ function Synergos({ onRestart }: { onRestart: () => void }) {
             <p className="mt-6 text-sm text-muted-foreground">Curious about what else we create?</p>
           </div>
           <div className="flex flex-col items-start gap-5">
-            <GoldButton href={LINKS.main}>Explore Synergos</GoldButton>
+            <GoldButton href={LINKS.main}>Explore the agency</GoldButton>
             <a href={LINKS.work} target="_blank" rel="noopener noreferrer" className="font-display text-xl italic text-champagne underline-offset-4 hover:underline">Discover our work →</a>
             <a href={LINKS.about} target="_blank" rel="noopener noreferrer" className="label-tracked text-gold/80 hover:text-gold">About us</a>
           </div>
         </motion.div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.2 }} className="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-gold/20 pt-6">
           <p className="label-tracked text-gold/70">A little light. A world of possibilities.</p>
-          <button onClick={onRestart} className="label-tracked text-champagne hover:text-gold">Pick another card ↺</button>
+          <GoldButton variant="ghost" onClick={onRestart}>{homepage ? "Light the diya" : "Pick another card ↺"}</GoldButton>
         </motion.div>
       </div>
     </motion.section>
