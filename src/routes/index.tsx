@@ -6,6 +6,7 @@ import { CardArt, CardBack, CardFrame } from "@/components/diwali/CardArt";
 import { CARDS, LINKS, pickFortune, type CardId, type Fortune } from "@/lib/fortunes";
 import { setSound, sfx } from "@/lib/sound";
 import { renderFortunePng } from "@/lib/exportCard";
+import synergosLogo from "@/assets/synergos-logo.svg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -137,7 +138,10 @@ function Experience() {
   return (
     <main className="relative min-h-[100svh] w-full overflow-hidden bg-stage text-ivory">
       <SoundToggle on={sound} toggle={toggleSound} />
-      <div className="fixed left-5 top-6 z-40 label-tracked text-gold/80">Synergos · Diwali</div>
+      <div className="fixed left-5 top-5 z-40 flex items-center gap-3">
+        <img src={synergosLogo.url} alt="Synergos" className="h-6 w-auto sm:h-7" />
+        <span className="label-tracked text-gold/80">· Diwali</span>
+      </div>
 
       <AnimatePresence mode="wait">
         {(stage === "intro" || stage === "lighting") && (
@@ -302,11 +306,17 @@ function KeepFortune({ show, card, fortune, onAnother, onNext }: { show: boolean
         <button onClick={onAnother} className="mt-2 label-tracked text-gold underline-offset-8 hover:underline">Discover another fortune ↺</button>
         <p className="h-5 text-xs text-saffron" aria-live="polite">{msg}</p>
       </div>
-      <button onClick={onNext} className="mt-10 flex w-full flex-col items-center gap-3 text-champagne">
+      <motion.button
+        onClick={onNext}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.97 }}
+        className="group mt-10 flex w-full cursor-pointer flex-col items-center gap-3 rounded-3xl border border-gold/30 px-6 py-6 text-champagne transition hover:border-gold hover:bg-gold/10"
+      >
         <span className="label-tracked text-[0.6rem]">One more thing</span>
         <motion.span className="h-12 w-px bg-foil" animate={{ scaleY: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 2.4 }} />
-        <span className="font-display text-xl italic">Who lit this light?</span>
-      </button>
+        <span className="font-display text-xl italic transition group-hover:text-foil">Who lit this light?</span>
+        <span className="label-tracked text-[0.55rem] text-gold/70 transition group-hover:text-gold">Tap to meet the creators →</span>
+      </motion.button>
     </motion.div>
   );
 }
