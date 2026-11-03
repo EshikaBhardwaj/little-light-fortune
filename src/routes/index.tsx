@@ -138,9 +138,9 @@ function Experience() {
   return (
     <main className="relative min-h-[100svh] w-full overflow-hidden bg-stage text-ivory">
       <SoundToggle on={sound} toggle={toggleSound} />
-      <div className="fixed left-5 top-5 z-40 flex items-center gap-3">
-        <img src={synergosLogo.url} alt="Synergos" className="h-6 w-auto sm:h-7" />
-        <span className="label-tracked text-gold/80">· Diwali</span>
+      <div className="fixed left-4 top-5 z-40 flex items-center gap-3 sm:left-5">
+        <img src={synergosLogo.url} alt="Synergos" className="h-4 w-auto sm:h-7" />
+        <span className="label-tracked hidden text-gold/80 sm:inline">· Diwali</span>
       </div>
 
       <AnimatePresence mode="wait">
