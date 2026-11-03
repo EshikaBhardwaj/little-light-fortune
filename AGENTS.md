@@ -10,3 +10,6 @@
 <!-- LOVABLE:END -->
 
 - The Diwali experience is a single-route stage machine in src/routes/index.tsx; fortunes, links and pick logic live in src/lib/fortunes.ts (tested) so content can change without touching UI.
+- Reuse the creator section on the homepage and final stage so agency destinations stay consistent.
+- Use the official asset pointer for on-screen and exported brand signatures; the favicon uses the same original SVG so brand artwork remains intact.
+- Route all synthesized sound through a faded master gain, gentle shared echo, and compressor so mute covers active effects and layered sounds remain controlled.
