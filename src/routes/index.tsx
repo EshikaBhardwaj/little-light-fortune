@@ -175,6 +175,12 @@ function Experience() {
                 )}
               </AnimatePresence>
             </motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 5.2, duration: 1.4 }} className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-2 px-6">
+              <p className="label-tracked text-[0.55rem] text-gold/60">Imagined and created by</p>
+              <a href={LINKS.main} target="_blank" rel="noopener noreferrer" aria-label="Visit Synergos">
+                <img src={synergosLogo.url} alt="Synergos" className="h-5 w-auto transition hover:opacity-80 sm:h-6" />
+              </a>
+            </motion.div>
           </motion.section>
         )}
 
@@ -331,6 +337,7 @@ function Synergos({ onRestart }: { onRestart: () => void }) {
       ))}
       <div className="relative mx-auto w-full max-w-4xl">
         <motion.p className="label-tracked text-gold" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>The creator behind the light</motion.p>
+        <motion.img src={synergosLogo.url} alt="Synergos" className="mt-8 h-10 w-auto sm:h-14" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1.1, ease: EASE }} />
         <h2 className="mt-6 font-display text-[3.2rem] font-medium leading-[0.9] tracking-tight sm:text-8xl">
           {["Every", "possibility", "begins with", "an idea."].map((w, i) => (
             <motion.span key={w} className={`block ${i === 3 ? "italic text-foil" : ""}`} initial={{ clipPath: "inset(0 0 100% 0)", y: 30 }} animate={{ clipPath: "inset(0 0 0% 0)", y: 0 }} transition={{ delay: 0.9 + i * 0.25, duration: 1.1, ease: EASE }}>{w}</motion.span>
@@ -340,7 +347,8 @@ function Synergos({ onRestart }: { onRestart: () => void }) {
           <div className="max-w-md">
             <p className="text-base leading-relaxed text-champagne">From little moments of magic to meaningful brand experiences, we believe creativity can transform the way people connect with ideas.</p>
             <div className="my-8 h-px w-16 bg-foil" />
-            <p className="font-display text-2xl italic leading-snug">This little Diwali experience was imagined and created by <span className="not-italic font-semibold text-foil">Synergos</span>.</p>
+            <p className="font-display text-2xl italic leading-snug">This little Diwali experience was imagined and created by</p>
+            <img src={synergosLogo.url} alt="Synergos" className="mt-4 h-8 w-auto sm:h-10" />
             <p className="mt-6 text-sm text-muted-foreground">Curious about what else we create?</p>
           </div>
           <div className="flex flex-col items-start gap-5">
